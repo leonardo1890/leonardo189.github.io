@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/pokemon/css/style.css" />
+    <title>Pokemondongo</title>
+  </head>
+
+  <header class="header">
+    <img class="logo" src="/pokemon/assets/logo.jpg" alt="" />
+    <nav class="navMainMenu" id="navMainMenu">
+      <ul class="mainMenu">
+        <li>in construction</li>
+        <li>in construction</li>
+        <li>in construction</li>
+      </ul>
+    </nav>
+    <img
+      class="imgMenuMobile"
+      id="imgMenuMobile"
+      src="/assets/icon-menu.png"
+      alt="menu-mobile"
+    />
+  </header>
+
+  <body>
+    <main>
+      <div class="container">
+        <h1 class="tituloJuego">Mokepon</h1>
+        <section id="seleccionMascota">
+          <div class="seleccionMascota">
+            <h2 class="subtitulo">Selecciona tu mascota</h2>
+            <!-- mascotas -->
+            <div class="tarjetaMascota">
+              <input type="radio" name="mascota" id="balto" />
+              <label class="inputLabelMascota" for="balto">
+                <img src="./assets/balto.png" alt="balto" />
+                <p class="name">Balto</p>
+              </label>
+              <input type="radio" name="mascota" id="kyra" />
+              <label class="inputLabelMascota" for="kyra">
+                <img src="./assets/kyra.png" alt="kyra" />
+                <p class="name">Kyra</p>
+              </label>
+              <input type="radio" name="mascota" id="toby" />
+              <label class="inputLabelMascota" for="toby">
+                <img src="./assets/tob.png" alt="toby" />
+                <p class="name">Toby</p>
+              </label>
+              <!-- <input type="radio" name="mascota" id="luna" />
+            <label class="inputLabelMascota" for="luna">Luna</label>
+            <input type="radio" name="mascota" id="lucy" />
+            <label class="inputLabelMascota" for="lucy">Lucy</label>
+            <input type="radio" name="mascota" id="katy" />
+            <label class="inputLabelMascota" for="katy">Katy</label> -->
+            </div>
+            <!-- boton seleccionar mascotas  -->
+            <div class="containerSeleccionMascota">
+              <button class="botonSeleccionMascota" id="boton-seleccionMascota">
+                Seleccionar
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <section class="ataques" id="ataques">
+        <h2 class="titleSeleccionAtaque">Selecciona tu ataque</h2>
+        <div class="botonesAtaques">
+          <button class="botonAtaque" id="boton-fuego">Mordida</button>
+          <button class="botonAtaque" id="boton-agua">Ladrido</button>
+          <button class="botonAtaque" id="boton-tierra">Golpe</button>
+        </div>
+
+        <div class="resultadoParcial-reiniciar" id="resultadoParcial-reiniciar">
+          <p class="resultadoParcial" id="resultadoParcial"></p>
+        </div>
+
+        <div class="containerRondas">
+          <p class="rondas" id="rondaGanada">Rodas Ganadas:</p>
+          <p class="rondas" id="rondaPerdida">Rodas Perdidas:</p>
+          <p class="rondas" id="rondaEmpatada">Rodas Empatadas:</p>
+        </div>
+
+        <div class="container infoPartida" id="infoPartida">
+          <div class="contenedor1">
+            <p class="vidaJugador" id="vidaJugador">3</p>
+            <p class="mascotaJugador" id="mascotaJugador"></p>
+            <div class="ataque" id="ataqueJugador"></div>
+          </div>
+
+          <div class="contenedor2">
+            <p class="vidaEnemigo" id="vidaEnemigo">3</p>
+            <p class="mascotaEnemigo" id="mascotaEnemigo"></p>
+            <div class="ataque" id="ataqueEnemigo"></div>
+          </div>
+        </div>
+      </section>
+      <section class="finPartidaReiniciar" id="finPartidaReiniciar">
+        <div class="containerFinPartida">
+        <div class="resultados" id="resultados"></div>
+        <button id="botonReiniciar" class="botonReiniciar">
+          Juega de nuevo
+        </button>
+      </div>
+      </section>
+    </main>
+    <script src="/pokemon/js/jsjuego.js"></script>
+  </body>
+</html>

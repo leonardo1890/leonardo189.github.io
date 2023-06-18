@@ -8,7 +8,7 @@
 }
 body {
   font-family: "Rowdies", cursive;
-  background: url("/pokemon/assets/background.png");
+  background: url("/assets/background.png");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: 100% 100%;

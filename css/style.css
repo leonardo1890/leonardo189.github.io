@@ -379,5 +379,8 @@ input:checked + .inputLabelMascota {
   .resultados{
     font-size: 32px;
   }
+  .containerRondas {
+    display: block;
+  }
 }
 /* MOBILE */

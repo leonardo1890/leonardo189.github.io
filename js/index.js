@@ -1,11 +1,32 @@
 window.addEventListener("load", iniciarJuego);
 
-let botonMascota = document.getElementById("boton-seleccionMascota");
-let botonAtaqueFuego = document.getElementById("boton-fuego");
-let botonAtaqueAgua = document.getElementById("boton-agua");
-let botonAtaqueTierra = document.getElementById("boton-tierra");
-let botonReiniciar = document.getElementById("botonReiniciar");
+const botonMascota = document.getElementById("boton-seleccionMascota");
+const botonAtaqueFuego = document.getElementById("boton-fuego");
+const botonAtaqueAgua = document.getElementById("boton-agua");
+const botonAtaqueTierra = document.getElementById("boton-tierra");
+const botonReiniciar = document.getElementById("botonReiniciar");
 
+const sectionSeleccionarAtaque = document.getElementById("ataques");
+const sectionInfoPartida = document.getElementById("infoPartida");
+const resultadoParcial = document.getElementById("resultadoParcial-reiniciar");
+const containerRondas = document.getElementById("containerRondas");
+const finPartida = document.getElementById("finPartidaReiniciar");
+const sectionSelecionMascota = document.getElementById("seleccionMascota");
+
+
+const buttonBalto = document.getElementById("balto");
+const buttonKyra = document.getElementById("kyra");
+const buttonToby = document.getElementById("toby");
+// const buttonLuna = document.getElementById('luna');
+// const buttonLucy = document.getElementById('lucy');
+// const buttonKaty = document.getElementById('katy');
+
+const spanMascotaJugador = document.getElementById("mascotaJugador");
+const spanMascotaEnemigo = document.getElementById("mascotaEnemigo");
+
+const mensajeResultadoParcial = document.getElementById("resultadoParcial");
+const textAtaqueJugador = document.getElementById("ataqueJugador");
+const textAtaqueEnemigo = document.getElementById("ataqueEnemigo");
 
 let ataqueJugador;
 let ataqueEnemigo;
@@ -16,18 +37,12 @@ let rondaPerdida = 0;
 let rondaEmpatada = 0;
 
 function iniciarJuego() {
-  let sectionSeleccionarAtaque = document.getElementById("ataques");
   sectionSeleccionarAtaque.style.display = "none";
-  
-  let sectionInfoPartida = document.getElementById("infoPartida");
-  sectionInfoPartida.style.display = "none";
-  let resultadoParcial = document.getElementById("resultadoParcial-reiniciar");
-  resultadoParcial.style.display = "none";
-  let containerRondas = document.getElementById("containerRondas");
-  containerRondas.style.display = "none";
-  let finPartida = document.getElementById("finPartidaReiniciar");
-    finPartida.style.display = "none";
 
+  sectionInfoPartida.style.display = "none";
+  resultadoParcial.style.display = "none";
+  containerRondas.style.display = "none";
+  finPartida.style.display = "none";
 
   botonMascota.addEventListener("click", seleccionMascotaJugador);
 
@@ -37,23 +52,15 @@ function iniciarJuego() {
 
   botonReiniciar.addEventListener("click", reiniciarJuego);
 
-  let imgMenuMobile = document.getElementById("imgMenuMobile");
-  let navMainMenu = document.getElementById("navMainMenu");
-
+  const imgMenuMobile = document.getElementById("imgMenuMobile");
+  const navMainMenu = document.getElementById("navMainMenu");
+  
   imgMenuMobile.addEventListener("click", () => {
     navMainMenu.classList.toggle("navMainMenu--show");
   });
 }
 
 function seleccionMascotaJugador() {
-  let buttonBalto = document.getElementById("balto");
-  let buttonKyra = document.getElementById("kyra");
-  let buttonToby = document.getElementById("toby");
-  // let buttonLuna = document.getElementById('luna');
-  // let buttonLucy = document.getElementById('lucy');
-  // let buttonKaty = document.getElementById('katy');
-
-  let spanMascotaJugador = document.getElementById("mascotaJugador");
 
   if (buttonBalto.checked == true) {
     spanMascotaJugador.innerHTML = "Balto";
@@ -73,22 +80,18 @@ function seleccionMascotaJugador() {
     alert("Selecciona un Pokemon");
   }
 
-  let sectionSeleccionarAtaque = document.getElementById("ataques");
   sectionSeleccionarAtaque.style.display = "flex";
-  let containerRondas = document.getElementById("containerRondas");
   containerRondas.style.display = "flex";
-  let sectionInfoPartida = document.getElementById("infoPartida");
+  
   sectionInfoPartida.style.display = "grid";
-  let sectionSelecionMascota = document.getElementById("seleccionMascota");
+  
   sectionSelecionMascota.style.display = "none";
 
   seleccionMascotaEnemigo();
 }
 
 function seleccionMascotaEnemigo() {
-  let mascotaEnemigoAleatorio = aleatorio(1, 6);
-
-  let spanMascotaEnemigo = document.getElementById("mascotaEnemigo");
+  const mascotaEnemigoAleatorio = aleatorio(1, 6);
 
   if (mascotaEnemigoAleatorio == 1) {
     spanMascotaEnemigo.innerHTML = "Balto";
@@ -106,7 +109,7 @@ function seleccionMascotaEnemigo() {
 }
 
 function ataqueAleatorioEnemigo() {
-  let ataqueEnemigoAleatorio = aleatorio(1, 3);
+  const ataqueEnemigoAleatorio = aleatorio(1, 3);
 
   if (ataqueEnemigoAleatorio == 1) {
     ataqueEnemigo = "Mordida";
@@ -135,15 +138,10 @@ function ataqueTierra() {
 }
 
 function crearMensaje(resultado) {
-  let resultadoParcial = document.getElementById("resultadoParcial-reiniciar");
   resultadoParcial.style.display = "flex";
 
-  let mensajeResultadoParcial = document.getElementById("resultadoParcial");
-  let textAtaqueJugador = document.getElementById("ataqueJugador");
-  let textAtaqueEnemigo = document.getElementById("ataqueEnemigo");
-
-  let nuevoAtaqueJugador = document.createElement("p");
-  let nuevoAtaqueEnemigo = document.createElement("p");
+  const nuevoAtaqueJugador = document.createElement("p");
+  const nuevoAtaqueEnemigo = document.createElement("p");
 
   mensajeResultadoParcial.innerHTML = resultado;
   nuevoAtaqueJugador.innerHTML = ataqueJugador;
@@ -154,11 +152,11 @@ function crearMensaje(resultado) {
 }
 
 function resultadoCombate() {
-  let spanVidasJugador = document.getElementById("vidaJugador");
-  let spanVidasEnemigo = document.getElementById("vidaEnemigo");
-  let spanRondaGanada = document.getElementById("rondaGanada");
-  let spanRondaPerdida = document.getElementById("rondaPerdida");
-  let spanRondaEmpatada = document.getElementById("rondaEmpatada");
+  const spanVidasJugador = document.getElementById("vidaJugador");
+  const spanVidasEnemigo = document.getElementById("vidaEnemigo");
+  const spanRondaGanada = document.getElementById("rondaGanada");
+  const spanRondaPerdida = document.getElementById("rondaPerdida");
+  const spanRondaEmpatada = document.getElementById("rondaEmpatada");
 
   if (ataqueJugador == ataqueEnemigo) {
     crearMensaje("Empataste");
@@ -179,40 +177,31 @@ function resultadoCombate() {
     vidasJugador--;
     rondaPerdida++;
     spanVidasJugador.innerHTML = vidasJugador;
-    spanRondaPerdida.innerHTML = "Rondas Perdidas: " +  rondaPerdida;
+    spanRondaPerdida.innerHTML = "Rondas Perdidas: " + rondaPerdida;
   }
 
   mensajeFinPartida();
 }
 
 function mensajeFinPartida() {
+  const resultadosJuego = document.getElementById("resultados");
 
-  let resultadosJuego = document.getElementById("resultados");
-
-  let mensajeResultados = document.createElement("p");
+  const mensajeResultados = document.createElement("p");
   resultadosJuego.appendChild(mensajeResultados);
 
   if (vidasJugador == 0) {
     mensajeResultados.innerHTML = "PARTIDA PERDIDA";
 
-    let botonAtaqueFuego = document.getElementById("boton-fuego");
     botonAtaqueFuego.disabled = true;
-    let botonAtaqueAgua = document.getElementById("boton-agua");
     botonAtaqueAgua.disabled = true;
-    let botonAtaqueTierra = document.getElementById("boton-tierra");
     botonAtaqueTierra.disabled = true;
-    
-    let sectionSeleccionarAtaque = document.getElementById("ataques");
-    sectionSeleccionarAtaque.style.display = "none";
-    let finPartida = document.getElementById("finPartidaReiniciar");
-    finPartida.style.display = "block";
 
+    sectionSeleccionarAtaque.style.display = "none";
+    finPartida.style.display = "block";
   } else if (vidasEnemigo == 0) {
     mensajeResultados.innerHTML = "PARTIDA GANADA";
 
-    let sectionSeleccionarAtaque = document.getElementById("ataques");
     sectionSeleccionarAtaque.style.display = "none";
-    let finPartida = document.getElementById("finPartidaReiniciar");
     finPartida.style.display = "block";
   }
 }

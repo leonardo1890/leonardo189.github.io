@@ -1,5 +1,12 @@
 window.addEventListener("load", iniciarJuego);
 
+let botonMascota = document.getElementById("boton-seleccionMascota");
+let botonAtaqueFuego = document.getElementById("boton-fuego");
+let botonAtaqueAgua = document.getElementById("boton-agua");
+let botonAtaqueTierra = document.getElementById("boton-tierra");
+let botonReiniciar = document.getElementById("botonReiniciar");
+
+
 let ataqueJugador;
 let ataqueEnemigo;
 let vidasJugador = 3;
@@ -16,27 +23,18 @@ function iniciarJuego() {
   sectionInfoPartida.style.display = "none";
   let resultadoParcial = document.getElementById("resultadoParcial-reiniciar");
   resultadoParcial.style.display = "none";
-  let rondaGanada = document.getElementById("rondaGanada");
-  rondaGanada.style.display = "none";
-  let rondaPerdida = document.getElementById("rondaPerdida");
-  rondaPerdida.style.display = "none";
-  let rondaEmpatada = document.getElementById("rondaEmpatada");
-  rondaEmpatada.style.display = "none";
+  let containerRondas = document.getElementById("containerRondas");
+  containerRondas.style.display = "none";
   let finPartida = document.getElementById("finPartidaReiniciar");
     finPartida.style.display = "none";
 
 
-  let botonMascota = document.getElementById("boton-seleccionMascota");
   botonMascota.addEventListener("click", seleccionMascotaJugador);
 
-  let botonAtaqueFuego = document.getElementById("boton-fuego");
   botonAtaqueFuego.addEventListener("click", ataqueFuego);
-  let botonAtaqueAgua = document.getElementById("boton-agua");
   botonAtaqueAgua.addEventListener("click", ataqueAgua);
-  let botonAtaqueTierra = document.getElementById("boton-tierra");
   botonAtaqueTierra.addEventListener("click", ataqueTierra);
 
-  let botonReiniciar = document.getElementById("botonReiniciar");
   botonReiniciar.addEventListener("click", reiniciarJuego);
 
   let imgMenuMobile = document.getElementById("imgMenuMobile");
@@ -77,6 +75,8 @@ function seleccionMascotaJugador() {
 
   let sectionSeleccionarAtaque = document.getElementById("ataques");
   sectionSeleccionarAtaque.style.display = "flex";
+  let containerRondas = document.getElementById("containerRondas");
+  containerRondas.style.display = "flex";
   let sectionInfoPartida = document.getElementById("infoPartida");
   sectionInfoPartida.style.display = "grid";
   let sectionSelecionMascota = document.getElementById("seleccionMascota");
@@ -165,9 +165,9 @@ function resultadoCombate() {
     rondaEmpatada++;
     spanRondaEmpatada.innerHTML = "Rondas Empatadas: " + rondaEmpatada;
   } else if (
-    (ataqueJugador == "Fuego" && ataqueEnemigo == "Tierra") ||
-    (ataqueJugador == "Agua" && ataqueEnemigo == "Fuego") ||
-    (ataqueJugador == "Tierra" && ataqueEnemigo == "Agua")
+    (ataqueJugador == "Mordida" && ataqueEnemigo == "Ladrido") ||
+    (ataqueJugador == "Golpe" && ataqueEnemigo == "Mordida") ||
+    (ataqueJugador == "Ladrido" && ataqueEnemigo == "Golpe")
   ) {
     crearMensaje("Ganaste");
     vidasEnemigo--;

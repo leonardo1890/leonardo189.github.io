@@ -286,7 +286,7 @@ input:checked + .inputLabelMascota {
 
 .containerRondas {
   display: flex;
-  justify-content: left;
+  justify-content: center;
 }
 
 .rondas {

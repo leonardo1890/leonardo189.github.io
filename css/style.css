@@ -1,0 +1,383 @@
+@import url("https://fonts.googleapis.com/css2?family=Rowdies:wght@400;700&display=swap");
+
+/* BODY */
+* {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+body {
+  font-family: "Rowdies", cursive;
+  background: url("/assets/background.png");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+}
+
+/* BODY */
+
+/* HEADER */
+
+.header {
+  background-color: #1a1f59;
+  padding: 0.6rem 2rem;
+  border-bottom: 1px solid #e8e8e8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.logo {
+  width: 150px;
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
+  list-style-type: none;
+}
+
+nav li {
+  font-size: 1.3rem;
+  margin: 0 0.5rem;
+  color: #e8e8e8;
+}
+
+.imgMenuMobile {
+  display: none;
+}
+
+/* HEADER */
+
+/* CONTENT */
+.seleccionMascota {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.tituloJuego {
+  color: white;
+  font-size: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+  text-shadow: 3px 3px 3px #424231;
+}
+
+.subtitulo,
+.titleSeleccionAtaque {
+  color: white;
+  font-size: 28px;
+  text-shadow: 3px 3px 3px #424231;
+}
+
+.tarjetaMascota {
+  display: flex;
+  gap: 10px;
+}
+
+input {
+  display: none;
+}
+
+.inputLabelMascota {
+  display: flex;
+  background-color: #1a6341;
+  width: 150px;
+  height: 150px;
+  box-sizing: border-box;
+  margin: 10px;
+  padding: 10px;
+  border-radius: 10px;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid #35b6f9;
+  cursor: pointer;
+}
+input:checked + .inputLabelMascota {
+  transform: scale(1.1);
+  border: 2px solid #f07a0c;
+  transition: 0.3s;
+}
+
+.tarjetaMascota img {
+  width: 80px;
+  border: 1px solid #35b6f9;
+  padding: 5px;
+  box-shadow: 0px -1px 5px 2px rgba(53, 182, 249, 0.75);
+  -webkit-box-shadow: 0px -1px 10px 2px rgba(53, 182, 249, 0.75);
+  -moz-box-shadow: 0px -1px 5px 2px rgba(53, 182, 249, 0.75);
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.name {
+  font-family: "Rowdies", cursive;
+  color: white;
+}
+
+.botonSeleccionMascota {
+  box-shadow: 2px 3px 0px 0px #1a6341;
+  background-color: #f07a0c;
+  border-radius: 10px;
+  border: 1px solid #1a6341;
+  display: inline-block;
+  cursor: pointer;
+  padding: 7px 25px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-family: "Rowdies", cursive;
+}
+
+.botonSeleccionMascota:hover {
+  background-color: #fc871c;
+}
+
+.botonSeleccionMascota:active {
+  position: relative;
+  top: 2px;
+  box-shadow: 1.7px 1px 0px 0px #1a6341;
+}
+
+.ataques, .seleccionMascota, .finPartidaReiniciar {
+  flex-direction: column;
+  align-items: center;
+  margin: 10px auto;
+  background: rgba(23, 122, 28, 0.73);
+  padding: 30px 0px;
+  max-width: 800px;
+  width: 100%;
+  box-shadow: 3px 5px 15px 5px #ffffad;
+  border: 1px solid #1a6341;
+  border-radius: 10px;
+}
+
+.containerFinPartida{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultados{
+  color: white;
+  font-size: 42px;
+  font-family: "Rowdies", cursive;
+  margin: 20px 0px 30px 0px;
+  padding: 5px 10px;
+  background-color: rgba(23, 122, 28);
+  border:1px solid #f07a0c;
+  border-radius: 10px;
+}
+
+.botonesAtaques {
+  margin: 50px 0px 10px 0px;
+}
+
+.botonAtaque {
+  box-shadow: 2px 3px 0px 0px #1a6341;
+  background-color: #f07a0c;
+  border-radius: 10px;
+  border: 1px solid #1a6341;
+  display: inline-block;
+  cursor: pointer;
+  padding: 7px 25px;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-family: "Rowdies", cursive;
+  margin: 10px;
+}
+
+.botonAtaque:hover {
+  box-shadow: rgba(45, 35, 66, 0.3) 0 4px 8px,
+    rgba(45, 35, 66, 0.2) 0 7px 13px -3px, #ebf5d4 0 -3px 0 inset;
+  transform: translateY(2px);
+}
+
+.botonAtaque:active {
+  box-shadow: rgba(45, 35, 66, 0.3) 0 4px 8px,
+    rgba(45, 35, 66, 0.2) 0 7px 13px -3px, #f07a0c 0 -3px 0 inset;
+  transform: translateY(4px);
+}
+
+.resultadoParcial-reiniciar {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.resultadoParcial {
+  font-family: "Rowdies", cursive;
+  font-size: 28px;
+  color: white;
+  max-width: 300px;
+  padding: 17px 40px;
+  margin: 50px 0px;
+
+  border-radius: 10px;
+  border: 0;
+  letter-spacing: 7px;
+  text-transform: uppercase;
+  box-shadow: #e6e591 0px 7px 29px 0px;
+}
+
+.botonReiniciar {
+  font-family: "Rowdies", cursive;
+  font-size: 18px;
+  width: 170px;
+  padding: 12px 0px;
+  border-radius: 10px;
+  cursor: pointer;
+  background-color: #f07a0c;
+  color: white;
+  border: 1px solid #1a6341;
+  box-shadow: 2px 3px 0px 0px #1a6341;
+  margin-bottom: 50px;
+}
+
+.botonReiniciar:hover {
+  box-shadow: rgba(45, 35, 66, 0.3) 0 4px 8px,
+    rgba(45, 35, 66, 0.2) 0 7px 13px -3px, #f07a0c 0 -3px 0 inset;
+  transform: translateY(2px);
+}
+
+.botonReiniciar:active {
+  transform: translateY(0px);
+}
+
+.infoPartida {
+  margin-top: 30px;
+  flex-direction: column;
+  align-items: center;
+  grid-template-columns: 200px 200px;
+  gap: 40px;
+}
+
+.contenedor1,
+.contenedor2 {
+  background-color: #3282d4;
+  border: 1px solid #1a1f59;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 200px;
+  border-radius: 5px;
+}
+
+.vidaJugador,
+.mascotaJugador,
+.vidaEnemigo,
+.mascotaEnemigo,
+.ataque {
+  color: white;
+  font-family: "Rowdies", cursive;
+  font-size: 18px;
+  padding: 3px 0px;
+}
+
+.containerRondas {
+  display: flex;
+  justify-content: left;
+}
+
+.rondas {
+  background-color: #f07a0c;
+  color: white;
+  font-family: "Rowdies", cursive;
+  margin: 5px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  border: 2px solid #1a6341;
+}
+
+/* CONTENT */
+
+/* MOBILE */
+
+@media screen and (max-width: 768px) {
+  .tarjetaMascota {
+    flex-direction: column;
+  }
+
+  .botonesAtaques {
+    display: flex;
+    flex-direction: column;
+  }
+
+  body {
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+
+  .imgMenuMobile {
+    display: block;
+    width: 64px;
+    cursor: pointer;
+    position: absolute;
+    right: 5px;
+  }
+
+  .navMainMenu {
+    width: 100%;
+    background-color: #1a1f59;
+    padding-bottom: 20px;
+    border-bottom: 1px solid white;
+    border-right: 1px solid white;
+    border-left: 1px solid white;
+    transition: transform 0.2s;
+    transform: translateY(-100px);
+  }
+
+  .navMainMenu--show {
+    transform: translateY(81px);
+  }
+
+  .mainMenu {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .header {
+    justify-content: center;
+    height: 64px;
+  }
+  .infoPartida {
+    grid-template-columns: 150px 150px;
+  }
+  
+  .contenedor1,
+  .contenedor2 {
+    width: 150px;
+  }
+
+  .ataques, .seleccionMascota, .finPartidaReiniciar {
+    max-width: 375px;
+    width: 100%;
+  }
+
+  .rondas{
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .resultados{
+    font-size: 32px;
+  }
+}
+/* MOBILE */

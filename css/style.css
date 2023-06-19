@@ -286,7 +286,7 @@ input:checked + .inputLabelMascota {
 
 .containerRondas {
   display: flex;
-  justify-content: left;
+  justify-content: center;
 }
 
 .rondas {
@@ -378,6 +378,9 @@ input:checked + .inputLabelMascota {
 
   .resultados{
     font-size: 32px;
+  }
+  .containerRondas {
+    display: block;
   }
 }
 /* MOBILE */

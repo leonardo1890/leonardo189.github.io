@@ -1,9 +1,6 @@
 window.addEventListener("load", iniciarJuego);
 
 const botonMascota = document.getElementById("boton-seleccionMascota");
-const botonAtaqueFuego = document.getElementById("boton-fuego");
-const botonAtaqueAgua = document.getElementById("boton-agua");
-const botonAtaqueTierra = document.getElementById("boton-tierra");
 const botonReiniciar = document.getElementById("botonReiniciar");
 
 const sectionSeleccionarAtaque = document.getElementById("ataques");
@@ -13,20 +10,31 @@ const containerRondas = document.getElementById("containerRondas");
 const finPartida = document.getElementById("finPartidaReiniciar");
 const sectionSelecionMascota = document.getElementById("seleccionMascota");
 
-
-const buttonBalto = document.getElementById("balto");
-const buttonKyra = document.getElementById("kyra");
-const buttonToby = document.getElementById("toby");
-// const buttonLuna = document.getElementById('luna');
-// const buttonLucy = document.getElementById('lucy');
-// const buttonKaty = document.getElementById('katy');
-
 const spanMascotaJugador = document.getElementById("mascotaJugador");
 const spanMascotaEnemigo = document.getElementById("mascotaEnemigo");
 
 const mensajeResultadoParcial = document.getElementById("resultadoParcial");
 const textAtaqueJugador = document.getElementById("ataqueJugador");
 const textAtaqueEnemigo = document.getElementById("ataqueEnemigo");
+
+const contenedorMascotas = document.getElementById("contenedorMascotas");
+
+const contenedorBotonesAtaques = document.getElementById(
+  "contenedorBotonesAtaques"
+);
+
+let pokemones = [];
+let opcionPokemones;
+let inputBalto;
+let inputKyra;
+let inputToby;
+let pokemonJugador;
+let ataquesPokemon;
+let botonAtaqueMordida;
+let botonAtaqueLadrido;
+let botonAtaqueGolpe;
+let botones = [];
+let ataquesPokemonEnemigo;
 
 let ataqueJugador;
 let ataqueEnemigo;
@@ -36,8 +44,57 @@ let rondaGanada = 0;
 let rondaPerdida = 0;
 let rondaEmpatada = 0;
 
+class Pokemon {
+  constructor(nombre, foto, vida) {
+    this.nombre = nombre;
+    this.foto = foto;
+    this.vida = vida;
+    this.ataques = [];
+  }
+}
+
+let balto = new Pokemon("Balto", "/assets/balto.png", 5);
+let kyra = new Pokemon("Kyra", "/assets/kyra.png", 4);
+let toby = new Pokemon("Toby", "/assets/tob.png", 3);
+
+balto.ataques.push(
+  { nombre: "mordida", id: "boton-mordida" },
+  { nombre: "ladrido", id: "boton-ladrido" },
+  { nombre: "golpe", id: "boton-golpe" }
+);
+
+kyra.ataques.push(
+  { nombre: "golpe", id: "boton-golpe" },
+  { nombre: "ladrido", id: "boton-ladrido" },
+  { nombre: "mordida", id: "boton-mordida" }
+);
+
+toby.ataques.push(
+  { nombre: "ladrido", id: "boton-ladrido" },
+  { nombre: "mordida", id: "boton-mordida" },
+  { nombre: "golpe", id: "boton-golpe" }
+);
+
+pokemones.push(balto, kyra, toby);
+
 function iniciarJuego() {
   sectionSeleccionarAtaque.style.display = "none";
+
+  pokemones.forEach((pokemon) => {
+    opcionPokemones = `
+    <input type="radio" name="mascota" id=${pokemon.nombre} />
+    <label class="inputLabelMascota" for=${pokemon.nombre}>
+      <img src=${pokemon.foto} alt=${pokemon.nombre} />
+      <p class="name">${pokemon.nombre}</p>
+    </label>
+    `;
+
+    contenedorMascotas.innerHTML += opcionPokemones;
+
+    inputBalto = document.getElementById("Balto");
+    inputKyra = document.getElementById("Kyra");
+    inputToby = document.getElementById("Toby");
+  });
 
   sectionInfoPartida.style.display = "none";
   resultadoParcial.style.display = "none";
@@ -45,94 +102,103 @@ function iniciarJuego() {
   finPartida.style.display = "none";
 
   botonMascota.addEventListener("click", seleccionMascotaJugador);
-
-  botonAtaqueFuego.addEventListener("click", ataqueFuego);
-  botonAtaqueAgua.addEventListener("click", ataqueAgua);
-  botonAtaqueTierra.addEventListener("click", ataqueTierra);
-
   botonReiniciar.addEventListener("click", reiniciarJuego);
 
   const imgMenuMobile = document.getElementById("imgMenuMobile");
   const navMainMenu = document.getElementById("navMainMenu");
-  
+
   imgMenuMobile.addEventListener("click", () => {
     navMainMenu.classList.toggle("navMainMenu--show");
   });
 }
 
 function seleccionMascotaJugador() {
-
-  if (buttonBalto.checked == true) {
-    spanMascotaJugador.innerHTML = "Balto";
-  } else if (buttonKyra.checked == true) {
-    spanMascotaJugador.innerHTML = "Kyra";
-  } else if (buttonToby.checked == true) {
-    spanMascotaJugador.innerHTML = "Toby";
-  }
-  //  else if (buttonLuna.checked == true) {
-  //   spanMascotaJugador.innerHTML = 'Luna';
-  // } else if (buttonLucy.checked == true) {
-  //   spanMascotaJugador.innerHTML = 'Lucy';
-  // } else if (buttonKaty.checked == true) {
-  //   spanMascotaJugador.innerHTML = 'Katy';
-  // }
-  else {
+  if (inputBalto.checked == true) {
+    spanMascotaJugador.innerHTML = inputBalto.id;
+    pokemonJugador = inputBalto.id;
+  } else if (inputKyra.checked == true) {
+    spanMascotaJugador.innerHTML = inputKyra.id;
+    pokemonJugador = inputKyra.id;
+  } else if (inputToby.checked == true) {
+    spanMascotaJugador.innerHTML = inputToby.id;
+    pokemonJugador = inputToby.id;
+  } else {
     alert("Selecciona un Pokemon");
   }
 
+  extraerAtaques(pokemonJugador);
+  seleccionMascotaEnemigo();
+
   sectionSeleccionarAtaque.style.display = "flex";
   containerRondas.style.display = "flex";
-  
   sectionInfoPartida.style.display = "grid";
-  
   sectionSelecionMascota.style.display = "none";
-
-  seleccionMascotaEnemigo();
 }
 
-function seleccionMascotaEnemigo() {
-  const mascotaEnemigoAleatorio = aleatorio(1, 6);
-
-  if (mascotaEnemigoAleatorio == 1) {
-    spanMascotaEnemigo.innerHTML = "Balto";
-  } else if (mascotaEnemigoAleatorio == 2) {
-    spanMascotaEnemigo.innerHTML = "Kyra";
-  } else if (mascotaEnemigoAleatorio == 3) {
-    spanMascotaEnemigo.innerHTML = "Toby";
-  } else if (mascotaEnemigoAleatorio == 4) {
-    spanMascotaEnemigo.innerHTML = "Luna";
-  } else if (mascotaEnemigoAleatorio == 5) {
-    spanMascotaEnemigo.innerHTML = "Lucy";
-  } else if (mascotaEnemigoAleatorio == 6) {
-    spanMascotaEnemigo.innerHTML = "Katy";
+function extraerAtaques(pokemonJugador) {
+  let ataques;
+  for (let i = 0; i < pokemones.length; i++) {
+    if (pokemonJugador == pokemones[i].nombre) {
+      ataques = pokemones[i].ataques;
+    }
   }
+
+  mostrarAtaques(ataques);
+}
+
+function mostrarAtaques(ataques) {
+  ataques.forEach((ataque) => {
+    ataquesPokemon = `
+    <button class="botonAtaque btnAtaque" id=${ataque.id}>${ataque.nombre}</button>
+    `;
+    contenedorBotonesAtaques.innerHTML += ataquesPokemon;
+  });
+
+  botonAtaqueMordida = document.getElementById("boton-mordida");
+  botonAtaqueLadrido = document.getElementById("boton-ladrido");
+  botonAtaqueGolpe = document.getElementById("boton-golpe");
+  botones = document.querySelectorAll(".btnAtaque");
+
+  botonAtaqueMordida.addEventListener("click", ataqueMordida);
+  botonAtaqueLadrido.addEventListener("click", ataqueLadrido);
+  botonAtaqueGolpe.addEventListener("click", ataqueGolpe);
+}
+
+function secuenciaAtaque() {}
+
+function seleccionMascotaEnemigo() {
+  let mascotaEnemigoAleatorio = aleatorio(0, pokemones.length - 1);
+
+  spanMascotaEnemigo.innerHTML = pokemones[mascotaEnemigoAleatorio].nombre;
+  ataquesPokemonEnemigo = pokemones[mascotaEnemigoAleatorio].ataques;
 }
 
 function ataqueAleatorioEnemigo() {
-  const ataqueEnemigoAleatorio = aleatorio(1, 3);
+  let ataqueEnemigoAleatorio = aleatorio(0, ataquesPokemonEnemigo.length - 1);
 
-  if (ataqueEnemigoAleatorio == 1) {
+  if (ataqueEnemigoAleatorio == 0) {
     ataqueEnemigo = "Mordida";
-  } else if (ataqueEnemigoAleatorio == 2) {
+  } else if (ataqueEnemigoAleatorio == 1) {
     ataqueEnemigo = "Ladrido";
-  } else if (ataqueEnemigoAleatorio == 3) {
+  } else if (ataqueEnemigoAleatorio == 2) {
     ataqueEnemigo = "Golpe";
   }
 
   resultadoCombate();
 }
 
-function ataqueFuego() {
+function ataqueMordida() {
   ataqueJugador = "Mordida";
   ataqueAleatorioEnemigo();
 }
+textAtaqueEnemigo;
 
-function ataqueAgua() {
+function ataqueLadrido() {
   ataqueJugador = "Ladrido";
   ataqueAleatorioEnemigo();
 }
 
-function ataqueTierra() {
+function ataqueGolpe() {
   ataqueJugador = "Golpe";
   ataqueAleatorioEnemigo();
 }
@@ -171,13 +237,30 @@ function resultadoCombate() {
     vidasEnemigo--;
     rondaGanada++;
     spanVidasEnemigo.innerHTML = vidasEnemigo;
+
     spanRondaGanada.innerHTML = "Rondas Ganadas: " + rondaGanada;
   } else {
     crearMensaje("Perdiste");
     vidasJugador--;
     rondaPerdida++;
-    spanVidasJugador.innerHTML = vidasJugador;
+
     spanRondaPerdida.innerHTML = "Rondas Perdidas: " + rondaPerdida;
+  }
+
+  if (vidasEnemigo == 3) {
+    spanVidasEnemigo.innerHTML = "❤️❤️❤️";
+  } else if (vidasEnemigo == 2) {
+    spanVidasEnemigo.innerHTML = "❤️❤️";
+  } else if (vidasEnemigo == 1) {
+    spanVidasEnemigo.innerHTML = "❤️";
+  }
+
+  if (vidasJugador == 3) {
+    spanVidasJugador.innerHTML = "❤️❤️❤️";
+  } else if (vidasJugador == 2) {
+    spanVidasJugador.innerHTML = "❤️❤️";
+  } else if (vidasJugador == 1) {
+    spanVidasJugador.innerHTML = "❤️";
   }
 
   mensajeFinPartida();
@@ -192,9 +275,9 @@ function mensajeFinPartida() {
   if (vidasJugador == 0) {
     mensajeResultados.innerHTML = "PARTIDA PERDIDA";
 
-    botonAtaqueFuego.disabled = true;
-    botonAtaqueAgua.disabled = true;
-    botonAtaqueTierra.disabled = true;
+    botonAtaqueMordida.disabled = true;
+    botonAtaqueLadrido.disabled = true;
+    botonAtaqueGolpe.disabled = true;
 
     sectionSeleccionarAtaque.style.display = "none";
     finPartida.style.display = "block";

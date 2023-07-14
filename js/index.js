@@ -23,6 +23,11 @@ const contenedorBotonesAtaques = document.getElementById(
   "contenedorBotonesAtaques"
 );
 
+const sectionVerMapa = document.getElementById("verMapa");
+const mapa = document.getElementById("mapa");
+
+const alertSeleccion = document.getElementById("containerModal");
+
 let pokemones = [];
 let opcionPokemones;
 let inputBalto;
@@ -44,18 +49,82 @@ let rondaGanada = 0;
 let rondaPerdida = 0;
 let rondaEmpatada = 0;
 
+let lienzo = mapa.getContext("2d");
+let intervalo;
+let mapaBackground = new Image();
+let mascotaJugadorObjeto;
+let alturaBuscada;
+let anchoMapa = window.innerWidth - 20;
+const anchoMaximoMapa = 800;
+
+if (anchoMapa > anchoMaximoMapa) {
+  anchoMapa = anchoMaximoMapa - 20;
+}
+
+alturaBuscada = (anchoMapa * 600) / 800;
+
+mapa.width = anchoMapa;
+mapa.height = alturaBuscada;
+
+mapaBackground.src = "/assets/mapaPokemon.png";
+
 class Pokemon {
-  constructor(nombre, foto, vida) {
+  constructor(nombre, foto, vida, fotoMapa) {
     this.nombre = nombre;
     this.foto = foto;
     this.vida = vida;
     this.ataques = [];
+    this.ancho = 80;
+    this.alto = 80;
+    this.x = aleatorio(0, mapa.width - this.ancho);
+    this.y = aleatorio(0, mapa.height - this.alto);
+    this.mapaFoto = new Image();
+    this.mapaFoto.src = fotoMapa;
+    this.velocidadX = 0;
+    this.velocidadY = 0;
+  }
+  pintarPokemon() {
+    lienzo.drawImage(this.mapaFoto, this.x, this.y, this.ancho, this.alto);
   }
 }
 
-let balto = new Pokemon("Balto", "/assets/balto.png", 5);
-let kyra = new Pokemon("Kyra", "/assets/kyra.png", 4);
-let toby = new Pokemon("Toby", "/assets/tob.png", 3);
+let balto = new Pokemon(
+  "Balto",
+  "/assets/balto.png",
+  5,
+  "/assets/Icon-balto.png"
+);
+let kyra = new Pokemon(
+  "Kyra",
+  "/assets/kyra.png",
+  4,
+  "/assets/Icon-kyra.png"
+);
+let toby = new Pokemon(
+  "Toby",
+  "/assets/tob.png",
+  3,
+  "/assets/Icon-tob.png"
+);
+
+let baltoEnemigo = new Pokemon(
+  "Balto",
+  "/assets/balto.png",
+  5,
+  "/assets/Icon-balto.png"
+);
+let kyraEnemigo = new Pokemon(
+  "Kyra",
+  "/assets/kyra.png",
+  4,
+  "/assets/Icon-kyra.png"
+);
+let tobyEnemigo = new Pokemon(
+  "Toby",
+  "/assets/tob.png",
+  3,
+  "/assets/Icon-tob.png"
+);
 
 balto.ataques.push(
   { nombre: "mordida", id: "boton-mordida" },
@@ -75,9 +144,29 @@ toby.ataques.push(
   { nombre: "golpe", id: "boton-golpe" }
 );
 
+baltoEnemigo.ataques.push(
+  { nombre: "mordida", id: "boton-mordida" },
+  { nombre: "ladrido", id: "boton-ladrido" },
+  { nombre: "golpe", id: "boton-golpe" }
+);
+
+kyraEnemigo.ataques.push(
+  { nombre: "golpe", id: "boton-golpe" },
+  { nombre: "ladrido", id: "boton-ladrido" },
+  { nombre: "mordida", id: "boton-mordida" }
+);
+
+tobyEnemigo.ataques.push(
+  { nombre: "ladrido", id: "boton-ladrido" },
+  { nombre: "mordida", id: "boton-mordida" },
+  { nombre: "golpe", id: "boton-golpe" }
+);
+
 pokemones.push(balto, kyra, toby);
 
 function iniciarJuego() {
+  sectionVerMapa.style.display = "none";
+
   sectionSeleccionarAtaque.style.display = "none";
 
   pokemones.forEach((pokemon) => {
@@ -123,16 +212,17 @@ function seleccionMascotaJugador() {
     spanMascotaJugador.innerHTML = inputToby.id;
     pokemonJugador = inputToby.id;
   } else {
-    alert("Selecciona un Pokemon");
+    alert("Selecciona una mascota");
   }
 
-  extraerAtaques(pokemonJugador);
-  seleccionMascotaEnemigo();
+  sectionVerMapa.style.display = "flex";
 
-  sectionSeleccionarAtaque.style.display = "flex";
   containerRondas.style.display = "flex";
   sectionInfoPartida.style.display = "grid";
   sectionSelecionMascota.style.display = "none";
+
+  extraerAtaques(pokemonJugador);
+  iniciarMapa();
 }
 
 function extraerAtaques(pokemonJugador) {
@@ -166,11 +256,10 @@ function mostrarAtaques(ataques) {
 
 function secuenciaAtaque() {}
 
-function seleccionMascotaEnemigo() {
-  let mascotaEnemigoAleatorio = aleatorio(0, pokemones.length - 1);
-
-  spanMascotaEnemigo.innerHTML = pokemones[mascotaEnemigoAleatorio].nombre;
-  ataquesPokemonEnemigo = pokemones[mascotaEnemigoAleatorio].ataques;
+function seleccionMascotaEnemigo(enemigo) {
+  spanMascotaEnemigo.innerHTML = enemigo.nombre;
+  ataquesPokemonEnemigo = enemigo.ataques;
+  secuenciaAtaque();
 }
 
 function ataqueAleatorioEnemigo() {
@@ -289,10 +378,120 @@ function mensajeFinPartida() {
   }
 }
 
+function pintarCanvas() {
+  mascotaJugadorObjeto.x =
+    mascotaJugadorObjeto.x + mascotaJugadorObjeto.velocidadX;
+  mascotaJugadorObjeto.y =
+    mascotaJugadorObjeto.y + mascotaJugadorObjeto.velocidadY;
+  lienzo.clearRect(0, 0, mapa.width, mapa.height);
+  lienzo.drawImage(mapaBackground, 0, 0, mapa.width, mapa.height);
+  mascotaJugadorObjeto.pintarPokemon();
+  baltoEnemigo.pintarPokemon();
+  kyraEnemigo.pintarPokemon();
+  tobyEnemigo.pintarPokemon();
+  if (
+    mascotaJugadorObjeto.velocidadX !== 0 ||
+    mascotaJugadorObjeto.velocidadY !== 0
+  ) {
+    revisarColision(baltoEnemigo);
+    revisarColision(kyraEnemigo);
+    revisarColision(tobyEnemigo);
+  }
+}
+
+function moverDerecha() {
+  mascotaJugadorObjeto.velocidadX = +5;
+  pintarCanvas();
+}
+
+function moverIzquierda() {
+  mascotaJugadorObjeto.velocidadX = -5;
+  pintarCanvas();
+}
+
+function moverArriba() {
+  mascotaJugadorObjeto.velocidadY = -5;
+  pintarCanvas();
+}
+
+function moverAbajo() {
+  mascotaJugadorObjeto.velocidadY = +5;
+  pintarCanvas();
+}
+
+function detenerMoviemiento() {
+  mascotaJugadorObjeto.velocidadX = 0;
+  mascotaJugadorObjeto.velocidadY = 0;
+}
+
+function interaccionTecla(event) {
+  switch (event.key) {
+    case "ArrowUp":
+      moverArriba();
+      break;
+    case "ArrowDown":
+      moverAbajo();
+      break;
+
+    case "ArrowLeft":
+      moverIzquierda();
+      break;
+
+    case "ArrowRight":
+      moverDerecha();
+      break;
+
+    default:
+      break;
+  }
+}
+
+function iniciarMapa() {
+  mascotaJugadorObjeto = obtenerObjetoMascota(pokemonJugador);
+  intervalo = setInterval(pintarCanvas, 50);
+  window.addEventListener("keydown", interaccionTecla);
+  window.addEventListener("keyup", detenerMoviemiento);
+}
+
+function obtenerObjetoMascota() {
+  for (let i = 0; i < pokemones.length; i++) {
+    if (pokemonJugador == pokemones[i].nombre) {
+      return pokemones[i];
+    }
+  }
+}
+
 function reiniciarJuego() {
   location.reload();
 }
 
 function aleatorio(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function revisarColision(enemigo) {
+  const enemigoArriba = enemigo.y;
+  const enemigoAbajo = enemigo.y + enemigo.alto;
+  const enemigoDerecha = enemigo.x + enemigo.ancho;
+  const enemigoIzquierda = enemigo.x;
+
+  const mascotaArriba = mascotaJugadorObjeto.y;
+  const mascotaAbajo = mascotaJugadorObjeto.y + mascotaJugadorObjeto.alto;
+  const mascotaDerecha = mascotaJugadorObjeto.x + mascotaJugadorObjeto.ancho;
+  const mascotaIzquierda = mascotaJugadorObjeto.x;
+
+  if (
+    mascotaAbajo < enemigoArriba ||
+    mascotaArriba > enemigoAbajo ||
+    mascotaDerecha < enemigoIzquierda ||
+    mascotaIzquierda > enemigoDerecha
+  ) {
+    return;
+  }
+  console.log("prueba");
+  detenerMoviemiento();
+  sectionSeleccionarAtaque.style.display = "flex";
+  sectionVerMapa.style.display = "none";
+  seleccionMascotaEnemigo(enemigo);
+  //alert("colision" + enemigo.nombre);
 }

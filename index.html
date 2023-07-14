@@ -49,10 +49,37 @@
         </section>
       </div>
 
+
+<!-- <button class="open" id="open" >open</button>
+
+      <div class="containerModal" id="containerModal">
+        <div class="modalSeleccionMascota" id="modalSeleccionMascota">
+          <h2>Selecciona una mascota</h2>
+          <p>Por favor selecciona una mascota para poder jugar </p>
+          <button class="btn-close" id="btn-close">Aceptar</button>
+          </div>
+      </div> -->
+
+      <section class="verMapa" id="verMapa">
+        <h1 class="titulo">Recorre el mapa con tu pokemon</h1>
+        <canvas class="mapa" id="mapa"></canvas>
+        <button onmouseup="detenerMoviemiento()" onmousedown="moverArriba()">
+          Arriba
+        </button>
+        <button onmouseup="detenerMoviemiento()" onmousedown="moverIzquierda()">
+          Izquierda
+        </button>
+        <button onmouseup="detenerMoviemiento()" onmousedown="moverAbajo()">
+          Abajo
+        </button>
+        <button onmouseup="detenerMoviemiento()" onmousedown="moverDerecha()">
+          Derecha
+        </button>
+      </section>
+
       <section class="ataques" id="ataques">
         <h2 class="titleSeleccionAtaque">Selecciona tu ataque</h2>
-        <div id="contenedorBotonesAtaques" class="botonesAtaques">
-        </div>
+        <div id="contenedorBotonesAtaques" class="botonesAtaques"></div>
 
         <div class="resultadoParcial-reiniciar" id="resultadoParcial-reiniciar">
           <p class="resultadoParcial" id="resultadoParcial"></p>

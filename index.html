@@ -49,8 +49,7 @@
         </section>
       </div>
 
-
-<!-- <button class="open" id="open" >open</button>
+      <!-- <button class="open" id="open" >open</button>
 
       <div class="containerModal" id="containerModal">
         <div class="modalSeleccionMascota" id="modalSeleccionMascota">
@@ -62,19 +61,37 @@
 
       <section class="verMapa" id="verMapa">
         <h1 class="titulo">Recorre el mapa con tu pokemon</h1>
+        <div class="botonesMovimiento">
+          <button
+            class="botonMovimiento botonArriba"
+            onmouseup="detenerMoviemiento()"
+            onmousedown="moverArriba()"
+          >
+            <span class="buttonSpan"> ⬆️ </span>
+          </button>
+          <button
+            class="botonMovimiento botonIzquierda"
+            onmouseup="detenerMoviemiento()"
+            onmousedown="moverIzquierda()"
+          >
+            <span class="buttonSpan"> ⬅️ </span>
+          </button>
+          <button
+            class="botonMovimiento botonDerecha"
+            onmouseup="detenerMoviemiento()"
+            onmousedown="moverDerecha()"
+          >
+            <span class="buttonSpan"> ➡️ </span>
+          </button>
+          <button
+            class="botonMovimiento botonAbajo"
+            onmouseup="detenerMoviemiento()"
+            onmousedown="moverAbajo()"
+          >
+            <span class="buttonSpan"> ⬇️ </span>
+          </button>
+        </div>
         <canvas class="mapa" id="mapa"></canvas>
-        <button onmouseup="detenerMoviemiento()" onmousedown="moverArriba()">
-          Arriba
-        </button>
-        <button onmouseup="detenerMoviemiento()" onmousedown="moverIzquierda()">
-          Izquierda
-        </button>
-        <button onmouseup="detenerMoviemiento()" onmousedown="moverAbajo()">
-          Abajo
-        </button>
-        <button onmouseup="detenerMoviemiento()" onmousedown="moverDerecha()">
-          Derecha
-        </button>
       </section>
 
       <section class="ataques" id="ataques">

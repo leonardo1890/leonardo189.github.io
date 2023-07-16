@@ -373,7 +373,73 @@ input:checked + .inputLabelMascota {
 }
 
 
+.titulo{
+  font-family: "Rowdies", cursive;
+  color: white;
+}
 
+.botonMovimiento {
+  /* Variables */
+  --button_radius: 0.75em;
+  --button_color: #e8e8e8;
+  --button_outline_color: #000000;
+  font-size: 17px;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--button_radius);
+  background: var(--button_outline_color);
+  margin: 3px;
+}
+
+.buttonSpan {
+  display: block;
+  box-sizing: border-box;
+  border: 2px solid var(--button_outline_color);
+  border-radius: var(--button_radius);
+  padding: 5px 17px;
+  background: var(--button_color);
+  color: var(--button_outline_color);
+  transform: translateY(-0.2em);
+  transition: transform 0.1s ease;
+}
+
+.botonMovimiento:hover .buttonSpan {
+  /* Pull the button upwards when hovered */
+  transform: translateY(-0.33em);
+}
+
+.botonMovimiento:active .buttonSpan {
+  /* Push the button downwards when pressed */
+  transform: translateY(0);
+}
+
+
+.botonesMovimiento{
+  display: grid;
+  grid-template-columns: auto auto auto ;
+  grid-template-rows: auto auto auto;
+  margin: 10px 0px;
+}
+
+.botonArriba{
+  grid-column: 2/3;
+  grid-row: 1/2;
+}
+
+.botonAbajo{
+  grid-column: 2/3;
+  grid-row: 3/4;
+}
+
+.botonIzquierda{
+  grid-column: 1/2;
+  grid-row: 2/3;
+}
+
+.botonDerecha{
+  grid-column: 3/4;
+  grid-row: 2/3;
+}
 
 /*
  CONTENT */

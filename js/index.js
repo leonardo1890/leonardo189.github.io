@@ -28,6 +28,8 @@ const mapa = document.getElementById("mapa");
 
 const alertSeleccion = document.getElementById("containerModal");
 
+let jugadorId = null;
+
 let pokemones = [];
 let opcionPokemones;
 let inputBalto;
@@ -94,18 +96,8 @@ let balto = new Pokemon(
   5,
   "/assets/Icon-balto.png"
 );
-let kyra = new Pokemon(
-  "Kyra",
-  "/assets/kyra.png",
-  4,
-  "/assets/Icon-kyra.png"
-);
-let toby = new Pokemon(
-  "Toby",
-  "/assets/tob.png",
-  3,
-  "/assets/Icon-tob.png"
-);
+let kyra = new Pokemon("Kyra", "/assets/kyra.png", 4, "/assets/Icon-kyra.png");
+let toby = new Pokemon("Toby", "/assets/tob.png", 3, "/assets/Icon-tob.png");
 
 let baltoEnemigo = new Pokemon(
   "Balto",
@@ -199,6 +191,19 @@ function iniciarJuego() {
   imgMenuMobile.addEventListener("click", () => {
     navMainMenu.classList.toggle("navMainMenu--show");
   });
+
+  unirseAlJuego();
+}
+
+function unirseAlJuego() {
+  fetch("http://localhost:8080/unirse").then(function (res) {
+    if (res.ok) {
+      res.text().then(function (respuesta) {
+        console.log(respuesta);
+        jugadorId = respuesta;
+      });
+    }
+  });
 }
 
 function seleccionMascotaJugador() {
@@ -223,6 +228,19 @@ function seleccionMascotaJugador() {
 
   extraerAtaques(pokemonJugador);
   iniciarMapa();
+  seleccionarPokemon(pokemonJugador);
+}
+
+function seleccionarPokemon(pokemonJugador) {
+  fetch(`http://localhost:8080/mokepon/${jugadorId}`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      pokemon: pokemonJugador,
+    }),
+  });
 }
 
 function extraerAtaques(pokemonJugador) {
@@ -493,5 +511,4 @@ function revisarColision(enemigo) {
   sectionSeleccionarAtaque.style.display = "flex";
   sectionVerMapa.style.display = "none";
   seleccionMascotaEnemigo(enemigo);
-  //alert("colision" + enemigo.nombre);
 }

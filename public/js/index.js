@@ -29,6 +29,8 @@ const mapa = document.getElementById("mapa");
 const alertSeleccion = document.getElementById("containerModal");
 
 let jugadorId = null;
+let enemigoId = null
+let pokemonesEnemigos = [];
 
 let pokemones = [];
 let opcionPokemones;
@@ -71,7 +73,8 @@ mapa.height = alturaBuscada;
 mapaBackground.src = "/assets/mapaPokemon.png";
 
 class Pokemon {
-  constructor(nombre, foto, vida, fotoMapa) {
+  constructor(nombre, foto, vida, fotoMapa, id = null) {
+    this.id = id;
     this.nombre = nombre;
     this.foto = foto;
     this.vida = vida;
@@ -99,60 +102,29 @@ let balto = new Pokemon(
 let kyra = new Pokemon("Kyra", "/assets/kyra.png", 4, "/assets/Icon-kyra.png");
 let toby = new Pokemon("Toby", "/assets/tob.png", 3, "/assets/Icon-tob.png");
 
-let baltoEnemigo = new Pokemon(
-  "Balto",
-  "/assets/balto.png",
-  5,
-  "/assets/Icon-balto.png"
-);
-let kyraEnemigo = new Pokemon(
-  "Kyra",
-  "/assets/kyra.png",
-  4,
-  "/assets/Icon-kyra.png"
-);
-let tobyEnemigo = new Pokemon(
-  "Toby",
-  "/assets/tob.png",
-  3,
-  "/assets/Icon-tob.png"
-);
-
-balto.ataques.push(
+const baltoAtaques = [
   { nombre: "mordida", id: "boton-mordida" },
   { nombre: "ladrido", id: "boton-ladrido" },
-  { nombre: "golpe", id: "boton-golpe" }
-);
+  { nombre: "golpe", id: "boton-golpe" },
+];
 
-kyra.ataques.push(
+balto.ataques.push(...baltoAtaques);
+
+const kyraAtaques = [
   { nombre: "golpe", id: "boton-golpe" },
   { nombre: "ladrido", id: "boton-ladrido" },
-  { nombre: "mordida", id: "boton-mordida" }
-);
+  { nombre: "mordida", id: "boton-mordida" },
+];
 
-toby.ataques.push(
+kyra.ataques.push(...kyraAtaques);
+
+const tobyAtaques = [
   { nombre: "ladrido", id: "boton-ladrido" },
   { nombre: "mordida", id: "boton-mordida" },
-  { nombre: "golpe", id: "boton-golpe" }
-);
-
-baltoEnemigo.ataques.push(
-  { nombre: "mordida", id: "boton-mordida" },
-  { nombre: "ladrido", id: "boton-ladrido" },
-  { nombre: "golpe", id: "boton-golpe" }
-);
-
-kyraEnemigo.ataques.push(
   { nombre: "golpe", id: "boton-golpe" },
-  { nombre: "ladrido", id: "boton-ladrido" },
-  { nombre: "mordida", id: "boton-mordida" }
-);
+];
 
-tobyEnemigo.ataques.push(
-  { nombre: "ladrido", id: "boton-ladrido" },
-  { nombre: "mordida", id: "boton-mordida" },
-  { nombre: "golpe", id: "boton-golpe" }
-);
+toby.ataques.push(...tobyAtaques);
 
 pokemones.push(balto, kyra, toby);
 
@@ -196,7 +168,7 @@ function iniciarJuego() {
 }
 
 function unirseAlJuego() {
-  fetch("http://localhost:8080/unirse").then(function (res) {
+  fetch("http://192.168.1.5:8080/unirse").then(function (res) {
     if (res.ok) {
       res.text().then(function (respuesta) {
         console.log(respuesta);
@@ -204,6 +176,7 @@ function unirseAlJuego() {
       });
     }
   });
+  
 }
 
 function seleccionMascotaJugador() {
@@ -218,7 +191,10 @@ function seleccionMascotaJugador() {
     pokemonJugador = inputToby.id;
   } else {
     alert("Selecciona una mascota");
+    return
   }
+
+  seleccionarPokemon(pokemonJugador);
 
   sectionVerMapa.style.display = "flex";
 
@@ -228,19 +204,18 @@ function seleccionMascotaJugador() {
 
   extraerAtaques(pokemonJugador);
   iniciarMapa();
-  seleccionarPokemon(pokemonJugador);
 }
 
 function seleccionarPokemon(pokemonJugador) {
-  fetch(`http://localhost:8080/mokepon/${jugadorId}`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      pokemon: pokemonJugador,
-    }),
-  });
+  fetch(`http://192.168.1.5:8080/pokemon/${jugadorId}`, {
+      method: "post",
+      headers: {
+          "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+          pokemon: pokemonJugador
+      })
+  })
 }
 
 function extraerAtaques(pokemonJugador) {
@@ -325,6 +300,8 @@ function crearMensaje(resultado) {
 }
 
 function resultadoCombate() {
+  clearInterval(intervalo)
+
   const spanVidasJugador = document.getElementById("vidaJugador");
   const spanVidasEnemigo = document.getElementById("vidaEnemigo");
   const spanRondaGanada = document.getElementById("rondaGanada");
@@ -369,8 +346,40 @@ function resultadoCombate() {
   } else if (vidasJugador == 1) {
     spanVidasJugador.innerHTML = "❤️";
   }
+  if (ataqueJugador.length === 3) {
+    enviarAtaques()
+  }
 
   mensajeFinPartida();
+}
+
+
+function enviarAtaques(){
+  fetch (`http://192.168.1.5:8080/pokemon/${jugadorId}/ataques`), {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ataques: ataqueJugador
+    })
+  }
+  intervalo = setInterval(obtenerAtaques, 50)
+}
+
+function obtenerAtaques (){
+  fetch(`http://192.168.1.5:8080/pokemon/${enemigoId}/ataques`)
+  .then(function (res){
+    if (res.ok){
+      res.json()
+        .then(function({ataques}){
+            if (ataques.length === 3){
+              ataqueEnemigo = ataques
+              resultadoCombate()
+            }
+        })
+    }
+  })
 }
 
 function mensajeFinPartida() {
@@ -404,37 +413,79 @@ function pintarCanvas() {
   lienzo.clearRect(0, 0, mapa.width, mapa.height);
   lienzo.drawImage(mapaBackground, 0, 0, mapa.width, mapa.height);
   mascotaJugadorObjeto.pintarPokemon();
-  baltoEnemigo.pintarPokemon();
-  kyraEnemigo.pintarPokemon();
-  tobyEnemigo.pintarPokemon();
-  if (
-    mascotaJugadorObjeto.velocidadX !== 0 ||
-    mascotaJugadorObjeto.velocidadY !== 0
-  ) {
-    revisarColision(baltoEnemigo);
-    revisarColision(kyraEnemigo);
-    revisarColision(tobyEnemigo);
-  }
+
+  enviarPosicion(mascotaJugadorObjeto.x, mascotaJugadorObjeto.y);
+
+  pokemonesEnemigos.forEach(function (pokemon)
+  {
+      if(pokemon != undefined){
+          pokemon.pintarPokemon()
+          revisarColision(pokemon)
+      }
+  })
+}
+
+function enviarPosicion(x, y) {
+  fetch(`http://192.168.1.5:8080/pokemon/${jugadorId}/posicion`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      x,
+      y,
+    }),
+  }).then(function (res) {
+    if (res.ok) {
+      res.json().then(function ({ enemigos }) {
+        console.log(enemigos);
+        pokemonesEnemigos = enemigos.map(function (enemigo) {
+          let pokemonEnemigo = null;
+          if (enemigo.pokemon != undefined) {
+          
+          
+            const pokemonNombre = enemigo.pokemon.nombre
+
+            switch (pokemonNombre)
+            {
+            case "Balto":
+              pokemonEnemigo = new Pokemon('Balto', '/assets/balto.png', 5, '/assets/Icon-balto.png', enemigo.id)
+                    break
+                case "Kyra":
+                  pokemonEnemigo = new Pokemon('Kyra', '/assets/kyra.png', 5, '/assets/Icon-kyra.png', enemigo.id)
+                    break
+                case "Toby":
+                  pokemonEnemigo = new Pokemon('Toby', '/assets/tob.png', 5, '/assets/Icon-tob.png', enemigo.id)
+                    break
+                default:
+                    break
+            }
+            
+            pokemonEnemigo.x = enemigo.x;
+            pokemonEnemigo.y = enemigo.y;
+          }
+            return pokemonEnemigo;
+        });
+      });
+    }
+  });
+  
 }
 
 function moverDerecha() {
   mascotaJugadorObjeto.velocidadX = +5;
-  pintarCanvas();
 }
 
 function moverIzquierda() {
   mascotaJugadorObjeto.velocidadX = -5;
-  pintarCanvas();
-}
-
-function moverArriba() {
-  mascotaJugadorObjeto.velocidadY = -5;
-  pintarCanvas();
 }
 
 function moverAbajo() {
   mascotaJugadorObjeto.velocidadY = +5;
-  pintarCanvas();
+}
+
+function moverArriba() {
+  mascotaJugadorObjeto.velocidadY = -5;
 }
 
 function detenerMoviemiento() {
@@ -458,7 +509,6 @@ function interaccionTecla(event) {
     case "ArrowRight":
       moverDerecha();
       break;
-
     default:
       break;
   }
@@ -466,8 +516,11 @@ function interaccionTecla(event) {
 
 function iniciarMapa() {
   mascotaJugadorObjeto = obtenerObjetoMascota(pokemonJugador);
+  console.log(mascotaJugadorObjeto, mascotaJugador);
   intervalo = setInterval(pintarCanvas, 50);
+
   window.addEventListener("keydown", interaccionTecla);
+
   window.addEventListener("keyup", detenerMoviemiento);
 }
 
@@ -506,8 +559,11 @@ function revisarColision(enemigo) {
   ) {
     return;
   }
-  console.log("prueba");
   detenerMoviemiento();
+  clearInterval(intervalo);
+  console.log("Se detecto una colision");
+
+  enemigoId = enemigo.id
   sectionSeleccionarAtaque.style.display = "flex";
   sectionVerMapa.style.display = "none";
   seleccionMascotaEnemigo(enemigo);

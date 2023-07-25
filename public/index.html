@@ -64,28 +64,36 @@
         <div class="botonesMovimiento">
           <button
             class="botonMovimiento botonArriba"
+            ontouchend="detenerMoviemiento()"
             onmouseup="detenerMoviemiento()"
+            ontouchstart="moverArriba()"
             onmousedown="moverArriba()"
           >
             <span class="buttonSpan"> ⬆️ </span>
           </button>
           <button
             class="botonMovimiento botonIzquierda"
+            ontouchend="detenerMoviemiento()"
             onmouseup="detenerMoviemiento()"
+            ontouchstart="moverIzquierda()"
             onmousedown="moverIzquierda()"
           >
             <span class="buttonSpan"> ⬅️ </span>
           </button>
           <button
             class="botonMovimiento botonDerecha"
+            ontouchend="detenerMoviemiento()"
             onmouseup="detenerMoviemiento()"
+            ontouchstart="moverDerecha()"
             onmousedown="moverDerecha()"
           >
             <span class="buttonSpan"> ➡️ </span>
           </button>
           <button
             class="botonMovimiento botonAbajo"
+            ontouchend="detenerMoviemiento()"
             onmouseup="detenerMoviemiento()"
+            ontouchstart="moverAbajo()"
             onmousedown="moverAbajo()"
           >
             <span class="buttonSpan"> ⬇️ </span>
